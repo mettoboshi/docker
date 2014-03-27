@@ -1,13 +1,11 @@
-Quick Start
+README
 ===========
 
 - Requirement
 
-  Mac OS X
-
-  Virtual Box
-
-  Boot2Docker
+  Mac OS X  
+  Virtual Box  
+  Boot2Docker  
   
 - Clone github repository
 
@@ -15,8 +13,6 @@ Quick Start
 
 - Usege
 
-  cd docker
-
-  docker build -t [username]/[imagename] .
-
-  docker run -i -p 49160:80 -t [username]/[imagename]
+  cd docker  
+  docker build -t [username]/[imagename] .  
+  docker run -i -p 49160:80 -t [username]/[imagename]  
