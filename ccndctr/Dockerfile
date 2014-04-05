@@ -40,7 +40,7 @@ RUN nodebrew use latest
 # ENV
 ENV LANG ja_JP.utf8
 
-# tmp
+# install cloudconductor/maker 
 RUN mkdir -p /var/www/develop/empty
 RUN git clone https://github.com/cloudconductor/maker.git /var/www/develop/trial-maker
 ADD conf/oauth.yml /var/www/develop/trial-maker/config/
@@ -50,4 +50,3 @@ RUN su -; cd /var/www/develop/trial-maker; bundle exec rake init
 
 # exporse
 EXPOSE 8082
-
