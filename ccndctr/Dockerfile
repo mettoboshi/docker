@@ -51,5 +51,3 @@ RUN su -; cd /var/www/develop/trial-maker; bundle exec rake init
 # exporse
 EXPOSE 8082
 
-# CMD
-CMD ["cd /var/www/develop/trial-maker; bundle exec rake server:start", "-D", "FOREGROUND"]
