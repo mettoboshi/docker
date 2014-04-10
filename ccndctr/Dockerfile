@@ -7,7 +7,7 @@ MAINTAINER mettoboshi
 
 # Setup
 RUN yum update -y
-RUN yum install -y curl-devel expat-devel gettext-devel openssl-devel zlib-devel git gcc sqlite-devel readline-devel openssh openssh-server openssh-client which passwd sudo
+RUN yum install -y curl-devel expat-devel gettext-devel openssl-devel zlib-devel git gcc sqlite-devel readline-devel openssh openssh-server openssh-client which passwd sudo lsof wget
 
 # Ruby
 RUN git clone git://github.com/sstephenson/rbenv.git /usr/local/rbenv
@@ -28,7 +28,7 @@ RUN source /etc/profile.d/rbenv.sh; gem install bundler
 RUN chmod +x /etc/profile.d/rbenv.sh
 
 ENV RBENV_ROOT /usr/local/rbenv
-ENV PATH $RBENV_ROOT/bin:$RBENV_ROOT/shims:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:~/.nodebrew/current/bin/$PATH
+ENV PATH $RBENV_ROOT/bin:$RBENV_ROOT/shims:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/.nodebrew/current/bin/:/var/www/develop/phantomjs/phantomjs-1.9.7-linux-x86_64/bin:$PATH
 RUN echo 'gem: --no-rdoc --no-ri' >> /.gemrc
 
 # Node.js
@@ -36,7 +36,7 @@ RUN curl https://raw.github.com/hokaccha/nodebrew/master/nodebrew | perl - setup
 ENV PATH /.nodebrew/current/bin/:$PATH
 RUN nodebrew install-binary latest 
 RUN nodebrew use latest
-RUN npm install phantomjs
+RUN npm install -g jshint 
 
 # ENV
 ENV LANG ja_JP.utf8
@@ -70,8 +70,14 @@ RUN chown mettoboshi:developers /var/www/develop/trial-maker/config/oauth.yml
 USER root
 RUN sudo su -; cd /var/www/develop/trial-maker; bundle install
 RUN sudo su -; cd /var/www/develop/trial-maker; bundle exec rake init 
-#RUN sudo su - mettoboshi; cd /var/www/develop/trial-maker; bundle install
-#RUN sudo su - mettoboshi; cd /var/www/develop/trial-maker; bundle exec rake init 
+RUN sudo su -; cd /var/www/develop/trial-maker; RAILS_ENV=test bundle exec rake db:migrate 
+
+RUN mkdir /var/www/develop/phantomjs
+RUN cd /var/www/develop/phantomjs; wget https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-1.9.7-linux-x86_64.tar.bz2
+RUN cd /var/www/develop/phantomjs; tar xvjf phantomjs-1.9.7-linux-x86_64.tar.bz2
+
+# Jasmin-phantomjs
+RUN cd /var/www/develop/trial-maker/vendor/guard-jasmine-phantomjs/vendor; git clone https://github.com/larrymyers/jasmine-reporters.git
 
 # install cloudconductor/gui
 USER mettoboshi
